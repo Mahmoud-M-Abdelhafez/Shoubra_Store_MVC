@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using WebAppStore.Repository;
+using WebAppStore.ViewModels;
 
 namespace WebAppStore.Controllers
 {
@@ -13,30 +15,48 @@ namespace WebAppStore.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly StoreContextDB db;
+       
         private readonly UserManager<AppUser> userManager;
-        public HomeController(StoreContextDB context, UserManager<AppUser> userManager)
+        private readonly IProductRepository ProductRepository;
+        private readonly ICategoryRepository CategoryRepository;
+        private readonly IReviewRepository reviewRepository;
+
+        public HomeController(UserManager<AppUser> userManager,IProductRepository _ProductRepo, ICategoryRepository _CategoryRepo , IReviewRepository _ReviewRepo)
         {
-            db = context;
             this.userManager = userManager;
+            ProductRepository = _ProductRepo;
+            CategoryRepository = _CategoryRepo;
+            reviewRepository = _ReviewRepo;
         }
 
 
         public async Task<IActionResult> Index()
         {
-            var categories = db.Categories.ToList();
-            ViewBag.Products = db.Products.ToList();
-            ViewBag.Cats = db.Categories.Count();
-            ViewBag.Prodcount = db.Products.Count();
             ViewBag.UsersCount = await userManager.Users.CountAsync();
-            var productimages = db.ProductImages.ToList();
-            ViewBag.images = productimages;
-            var Reviews = db.Reviews.ToList();
-            ViewBag.Reviews = Reviews;
+
+            HomeVM homeVM = new HomeVM();
+             
+            var Users = await userManager.Users.ToListAsync();
+            homeVM.Users = Users;
+            homeVM.NoOfUsers = Users.Count;
+            homeVM.categories = CategoryRepository.GetAll();
+            homeVM.products = ProductRepository.GetAll();
+            homeVM.reviews = reviewRepository.GetAll();
+            homeVM.NoOfCategories = homeVM.categories.Count();
+            homeVM.NoOfProducts = homeVM.products.products.Count();
+            
+
+            return View(homeVM);
+        }
+        [AllowAnonymous]
+        public async Task<IActionResult> Start()
+        {
+            var Reviews = reviewRepository.GetAll();
             var users = await userManager.Users.ToListAsync();
             ViewBag.Users = users;
 
-            return View(categories);
+            return View(Reviews);
+
         }
 
 

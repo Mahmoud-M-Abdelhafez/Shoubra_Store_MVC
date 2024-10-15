@@ -38,12 +38,14 @@ namespace WebAppStore.Controllers
             }
             return View(model);
         }
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterVM model)
         {
             if (ModelState.IsValid) 
@@ -95,7 +97,7 @@ namespace WebAppStore.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Start");
+            return RedirectToAction("Start", "Home");
         }
 
 

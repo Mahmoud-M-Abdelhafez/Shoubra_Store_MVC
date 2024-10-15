@@ -1,11 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using WebAppStore.ViewModels
 @inject UserManager<AppUser> userManager
-@model List<Cart>
+@model CartProductsVM
 @{
     string userId = userManager.GetUserId(User);
     ViewData["Title"] = "Cart Page";
-    List<Product> products=ViewBag.Products;
-    List<ProductImage> Images = ViewBag.Images;
+   
     decimal Total = 0;
 }
 
@@ -72,16 +72,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var cart in Model)
+                        @foreach (var cart in Model.carts)
                         {
-                            @foreach (var item in products)
+                            @foreach (var item in Model.products)
                             {
                                 @if(item.Id == cart.ProductId)
                                 {
                                 <tr>
                                     <td class="p-4">
                                         <div style="width:20%; float:left; margin-right:2%;">
-                                                @foreach (var img in Images)
+                                                @foreach (var img in Model.images)
                                                 {
                                                     if(img.ProductId==item.Id)
                                                     {

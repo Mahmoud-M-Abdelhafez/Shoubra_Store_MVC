@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAppStore.Models;
+using WebAppStore.Repository;
 using WebAppStore.ViewModels;
 
 namespace WebAppStore.Controllers
@@ -10,15 +11,18 @@ namespace WebAppStore.Controllers
     public class ReviewController : Controller
     {
         private readonly UserManager<AppUser> userManager;
-        private readonly StoreContextDB db;
-        public ReviewController( UserManager<AppUser> userManager, StoreContextDB context)
+        private readonly IReviewRepository reviewRepository;
+        public ReviewController( UserManager<AppUser> userManager , IReviewRepository _ReviewRepo)
         {
-            db = context;
+            reviewRepository = _ReviewRepo;
             this.userManager = userManager;
         }
+        private readonly IProductRepository ProductRepository;
+       
+
         public async Task<IActionResult> Index()
         {
-            var Reviews = db.Reviews.ToList();
+            var Reviews = reviewRepository.GetAll();
             var users = await userManager.Users.ToListAsync();
             ViewBag.Users=users;
 
@@ -45,17 +49,7 @@ namespace WebAppStore.Controllers
                 // Return the view with the model to show validation errors
                 return View("Add", model);
             }
-            int star = model.stars;
-
-				var review = new Review
-                {
-                    stars = star,
-                    Description = model.Description,
-                   UserId = model.UserId
-                };
-
-                db.Reviews.Add(review);
-                db.SaveChanges();
+            reviewRepository.Insert(model);
             TempData["SuccessMessage"] = "Review added successfully!";
             return RedirectToAction("Index");
 
@@ -67,7 +61,7 @@ namespace WebAppStore.Controllers
         public IActionResult Edit(int Id)
         {
 
-            Review review = db.Reviews.SingleOrDefault(r => r.Id == Id);
+            Review review = reviewRepository.GetById(Id);
 
             if (review == null)
             {
@@ -80,24 +74,16 @@ namespace WebAppStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(int Id, AddReviewVM rev)
+        public IActionResult Update(int Id, AddReviewVM model)
         {
-            Review review = db.Reviews.SingleOrDefault(r => r.Id == Id);
-            if (review == null) { return NotFound(); }
-            int star = rev.stars;
-            review.stars = star;
-            review.Description = rev.Description;
-            db.SaveChanges();
+            reviewRepository.Edit(Id, model);
             TempData["SuccessMessage"] = "Review updated successfully!";
             return RedirectToAction("Index");
         }
         
         public IActionResult Delete(int id)
         {
-            Review review = db.Reviews.SingleOrDefault(r => r.Id == id);
-            if (review == null) { return NotFound(); }
-            db.Reviews.Remove(review);
-            db.SaveChanges();
+            reviewRepository.Delete(id);
             TempData["SuccessMessage"] = "Review deleted successfully!";
             return RedirectToAction("Index");
 

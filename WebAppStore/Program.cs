@@ -32,8 +32,10 @@ namespace WebAppStore
                 .AddEntityFrameworkStores<StoreContextDB>().AddDefaultTokenProviders();
 
             //Custom Service --REgister
-            builder.Services.AddScoped<IProductRepository,ProductRepository>();
-
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<ICartRepository, CartRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -49,7 +51,7 @@ namespace WebAppStore
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Start}/{action=Index}/{ id?}");
+                pattern: "{controller=home}/{action=start}/{ id?}");
 
             using(var scope = app.Services.CreateScope() )
             {

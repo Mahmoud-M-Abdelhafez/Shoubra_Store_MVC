@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using WebAppStore.ViewModels
 @inject UserManager<AppUser> userManager
- 
+
 @{
 
     ViewData["Title"] = "Details Page";
@@ -11,10 +11,10 @@
 
 <style>
     .portfolio-info li {
-        font-size:30px;
+        font-size: 30px;
     }
 
-    .portfolio-info h3{
+    .portfolio-info h3 {
         font-size: 40px;
     }
 
@@ -76,48 +76,48 @@
                             @foreach (var image in Model.productImages)
                             {
 
-                                    <div class="swiper-slide">
-                                        <img src="@image.Path" alt="@Model.product.Name Image" style="width:50%; height:50%;">
-                                    </div>
+                                <div class="swiper-slide">
+                                    <img src="@image.Path" alt="@Model.product.Name Image" style="width:50%; height:50%;">
+                                </div>
                             }
                         </div>
                         <div class="swiper-pagination"></div>
                     </div>
                 </div>
 
-                <div class="col-lg-6" >
-                    <div class="portfolio-info"  data-aos="fade-up" data-aos-delay="200">
+                <div class="col-lg-6">
+                    <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
                         <h3 style="font-size: 40px;">Product information</h3>
                         <ul>
                             <li><strong>Product Name</strong>: &nbsp; @Model.product.Name</li>
 
-                                    <li><strong>Category</strong>: &nbsp; @Model.category.Name</li>
+                            <li><strong>Category</strong>: &nbsp; @Model.category.Name</li>
 
 
-                           
-                            <li ><strong>Price</strong>:&nbsp; @Model.product.Price $ </li>
+
+                            <li><strong>Price</strong>:&nbsp; @Model.product.Price $ </li>
                             <li><strong>Description</strong>:&nbsp; @Model.product.Description</li>
                         </ul>
                         <div class="pricing-item featured">
-                        <form action="/cart/save" method="post">
-                            <div class="form-group">
+                            <form action="/cart/save" method="post">
+                                <div class="form-group">
 
 
-                                <input type="text" name="UserId" value="@userId" hidden />
-                                <input type="text" name="ProductId" value="@Model.product.Id" hidden />
-                            </div>
+                                    <input type="text" name="UserId" value="@userId" hidden />
+                                    <input type="text" name="ProductId" value="@Model.product.Id" hidden />
+                                </div>
 
-                            <div class="form-group">
-                                <input type="number" name="Qty" value="1" style="width:60px; display:inline; margin-bottom:10px;" />
-                            </div>
-                            <div class="form-group">
-                                <input class="btn-buy" type="submit" name="submit" value="Add to Cart" />
-                                <i class="bi bi-cart" style="font-size:40px; margin-bottom:0px; color:black;"></i>
+                                <div class="form-group">
+                                    <input type="number" name="Qty" value="1" style="width:60px; display:inline; margin-bottom:10px;" />
+                                </div>
+                                <div class="form-group">
+                                    <input class="btn-buy" type="submit" name="submit" value="Add to Cart" />
+                                    <i class="bi bi-cart" style="font-size:40px; margin-bottom:0px; color:black;"></i>
 
-                            </div>
+                                </div>
 
 
-                        </form>
+                            </form>
                         </div>
                     </div>
 

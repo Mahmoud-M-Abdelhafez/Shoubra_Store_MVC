@@ -1,16 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using WebAppStore.ViewModels
 @inject UserManager<AppUser> userManager
 @{
     ViewData["Title"] = "Category Page";
     bool isAdmin = User.IsInRole("Admin");
     bool isUser = User.IsInRole("User");
-    List<ProductImage> images = ViewBag.images;
-    Category category = ViewBag.category;
     string userId = userManager.GetUserId(User);
 }
-@model List<Product>
+@model CategoryDetailsVM
 <div style ="text-align:center; scroll-behavior:auto;">
-    <h1 style=" margin:20px; color:black;"><i class="@category.Icon icon flex-shrink-0" style="color:red; font-size:80px;"></i>  <br /> @category.Name Category</h1>
+    <h1 style=" margin:20px; color:black;"><i class="@Model.category.Icon icon flex-shrink-0" style="color:red; font-size:80px;"></i>  <br /> @Model.category.Name Category</h1>
 </div>
 @if (TempData["SuccessMessage"] != null)
 {
@@ -18,20 +17,19 @@
         @TempData["SuccessMessage"]
     </div>
 }
-@if (isUser)
-{
+
 <section id="pricing" class="pricing section">
        
     <div class="container">
 
         <div class="row gy-3">
 
-            @foreach (var item in Model)
+            @foreach (var item in Model.products)
             {
                 <div class="col-xl-3 col-lg-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="pricing-item featured">
                         <h3>@item.Name</h3>
-                        @foreach (var image in images)
+                        @foreach (var image in Model.productsImages)
                         {
                             if (image.ProductId == item.Id)
                             {
@@ -41,6 +39,8 @@
                         }
                         <h4><sup>$</sup>@item.Price</h4>
                         <p>@item.Description</p>
+                        @if (isUser)
+                        {
                             <form action="/cart/save" method="post">
                                 <div class="form-group">
 
@@ -57,57 +57,28 @@
                                     <i class="bi bi-cart" style="font-size:40px; margin-bottom:0px; color:black;"></i>
 
                                 </div>
+}
 
+                            </form>
+                            }
+                            @if (isAdmin)
+                            {
+                                <div class="btn-wrap">
+                                    <div class="ED">
+                                        <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirmDelete();"><i style="font-size:30px" class="bi bi-trash"></i></a>
+                                        <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id"><i style="font-size:30px" class="bi bi-pencil-square"></i></a>
+                                    </div>
+                                </div>
+                            }
 
-                            </form>>
                     </div>
                 </div>
             }
         </div>
     </div>
 </section>
-}
-@if (isAdmin)
-{
-    <style>
-        .ED a:hover {
-            color: blue;
-        }
-    </style>
 
-    <section id="pricing" class="pricing section">
 
-        <div class="container">
-
-            <div class="row gy-3">
-
-                @foreach (var item in Model)
-                {
-                    <div class="col-xl-3 col-lg-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="pricing-item featured">
-                            <h3>@item.Name</h3>
-                            @foreach (var image in images)
-                            {
-                                if (image.ProductId == item.Id)
-                                {
-                                    <img src="@image.Path" alt="@item.Name photo" style="width:120px; height:120px;" />
-                                    break;
-                                }
-                            }
-                            <h4><sup>$</sup>@item.Price</h4>
-                            <p>@item.Description</p>
-                            <div class="btn-wrap">
-                                <div class="ED">
-                                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirmDelete();"><i style="font-size:30px" class="bi bi-trash"></i></a>
-                                    <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id" ><i style="font-size:30px" class="bi bi-pencil-square"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </section>
 
     <script>
         function confirmDelete() {

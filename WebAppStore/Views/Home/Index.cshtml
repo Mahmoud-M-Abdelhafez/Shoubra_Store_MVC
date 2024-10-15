@@ -1,16 +1,17 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using WebAppStore.ViewModels
 @inject UserManager<AppUser> userManager
 
 @{
     bool isAdmin = User.IsInRole("Admin");
     bool isUser = User.IsInRole("User");
     string userId = userManager.GetUserId(User);
-    List<ProductImage> images = ViewBag.images;
-    List<Review> reviews = ViewBag.Reviews;
-    List<AppUser> Users = ViewBag.Users;
+  
+   // List<Review> reviews = ViewBag.Reviews;
+   
     ViewData["Title"] = "Home Page";
 }
-@model List<Category>
+@model HomeVM
    
 <style>
     .carousel-container h2{
@@ -93,7 +94,7 @@
     <div class="container">
 
         <div class="row gy-4">
-            @foreach (Category category in Model)
+            @foreach (Category category in Model.categories)
             {
                
                 <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
@@ -135,7 +136,7 @@
                
             <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
                 <li data-filter="*" class="filter-active">All</li>
-                    @foreach (Category category in Model)
+                    @foreach (Category category in Model.categories)
                     {
                 <li data-filter=".filter-@category.Id">@category.Name</li>
                     }
@@ -144,10 +145,10 @@
                 
             <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
 
-                        @foreach (Product product in ViewBag.Products)
+                        @foreach (Product product in Model.products.products)
                         {
                         <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-@product.CategoryId">
-                            @foreach (var image in images)
+                            @foreach (var image in Model.products.images)
                             {
                                 if (image.ProductId == product.Id)
                                 {
@@ -193,11 +194,11 @@
 
                 <div class="row gy-4">
 
-                            @foreach (var rev in reviews)
+                            @foreach (var rev in Model.reviews)
                     {
                         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
                             <div class="testimonial-item">
-                                @foreach (var user in Users)
+                                @foreach (var user in Model.Users)
                                 {
                                     if(user.Id==rev.UserId)
                                     {
@@ -348,7 +349,7 @@
                                     <a href="/Category/Index"><i class="bi bi-bag"></i> &nbsp; Categories</a>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title">@ViewBag.Cats</h5>
+                                    <h5 class="card-title">@Model.NoOfCategories</h5>
                                     <p class="card-text">Total categories available</p>
                                 </div>
                             </div>
@@ -359,7 +360,7 @@
                                     <a href="/Product/Index"><i class="bi bi-bag"></i> &nbsp; Products</a>
                                 </div>
                                 <div class="card-body">
-                                        <h5 class="card-title">@ViewBag.Prodcount</h5>
+                                        <h5 class="card-title">@Model.NoOfProducts</h5>
                                     <p class="card-text">Total products listed</p>
                                 </div>
                             </div>
@@ -370,7 +371,7 @@
                                     <a href="/Account/Users"><i class="bi bi-people"></i>&nbsp; Users</a>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title">@ViewBag.UsersCount</h5>
+                                    <h5 class="card-title">@Model.NoOfUsers</h5>
                                     <p class="card-text">Active users</p>
                                 </div>
                             </div>

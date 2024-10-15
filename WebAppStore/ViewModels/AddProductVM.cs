@@ -8,6 +8,7 @@ namespace WebAppStore.ViewModels
 {
     public class AddProductVM
     {
+        public int Id { get; set; }
         [Required]
         [MaxLength(40)]
         public string Name { get; set; }
@@ -27,7 +28,7 @@ namespace WebAppStore.ViewModels
         // Navigation Properties
         public virtual Category? Category { get; set; }
 
-        
+
         public virtual ICollection<ProductImage> Images { get; set; } = new HashSet<ProductImage>();
     }
 }
