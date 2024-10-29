@@ -27,6 +27,16 @@
         <div style="text-align:center; margin:40px;">
             <h2> Products </h2>
             <br />
+
+            <form asp-action="Search"  method="get">
+                <input type="text" name="searchTerm" placeholder="Search products..."
+                       value="@(ViewData["CurrentFilter"])" style="width: 300px; height: 40px;" />
+
+                <button class ="btn btn-danger " type="submit">Search</button>
+            </form>
+
+            <br />
+
             @if (isAdmin)
             {
                 <a href="/Product/Add"><button class="btn btn-success btn-lg">Add Product</button></a>

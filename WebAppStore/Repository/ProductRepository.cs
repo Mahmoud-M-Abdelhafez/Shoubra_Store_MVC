@@ -7,6 +7,8 @@ namespace WebAppStore.Repository
     public class ProductRepository : IProductRepository
     {
         private readonly StoreContextDB db;
+        ProductDetailsVM productDetailsVM = new ProductDetailsVM();
+        ProductsWithImagesVM productsWithImagesVM = new ProductsWithImagesVM();
         public ProductRepository(StoreContextDB context)
         {
             db = context;
@@ -16,7 +18,7 @@ namespace WebAppStore.Repository
 
         public ProductsWithImagesVM GetAll()
         {
-            ProductsWithImagesVM productsWithImagesVM = new ProductsWithImagesVM();
+           
             productsWithImagesVM.products = db.Products.ToList();
             productsWithImagesVM.images = db.ProductImages.ToList();
             return productsWithImagesVM;
@@ -77,7 +79,7 @@ namespace WebAppStore.Repository
 
         public void Edit(int id, AddProductVM item)
         {
-            ProductDetailsVM productDetailsVM = new ProductDetailsVM();
+            
             productDetailsVM = GetById(id);
             
             productDetailsVM.product.Name = item.Name;
@@ -90,10 +92,22 @@ namespace WebAppStore.Repository
 
         public void Delete(int id)
         {
-            ProductDetailsVM productDetailsVM = new ProductDetailsVM();
+            
             productDetailsVM = GetById(id);
             db.Products.Remove(productDetailsVM.product);
             db.SaveChanges();
+        }
+
+        public ProductsWithImagesVM search(string searchTerm)
+        {
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                productsWithImagesVM.products = db.Products.Where(p => p.Name.Contains(searchTerm) ||
+                                               p.Description.Contains(searchTerm)).ToList();
+                productsWithImagesVM.images = db.ProductImages.ToList();
+            }
+
+            return productsWithImagesVM;
         }
     }
 }
