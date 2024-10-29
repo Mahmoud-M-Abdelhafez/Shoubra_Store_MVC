@@ -32,7 +32,19 @@ namespace WebAppStore.Controllers
             return View(ProductRepository.GetById(Id));
         }
 
-       [Authorize(Roles = "Admin")]
+        public IActionResult Search(string searchTerm)
+        {
+            ViewData["CurrentFilter"] = searchTerm;
+
+            // Retrieve filtered products from the repository
+            var filteredProducts = ProductRepository.search(searchTerm);
+
+            // Pass the filtered products to the Index view
+            return View("Index", filteredProducts);
+        }
+
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             ViewBag.categories = CategoryRepository.GetAll();
