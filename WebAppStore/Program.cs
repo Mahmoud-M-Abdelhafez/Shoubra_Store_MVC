@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using WebAppStore.Data;
+using WebAppStore.Interfaces;
 using WebAppStore.Models;
 using WebAppStore.Repository;
 

@@ -1,4 +1,6 @@
-﻿using WebAppStore.Models;
+﻿using WebAppStore.Data;
+using WebAppStore.Interfaces;
+using WebAppStore.Models;
 using WebAppStore.ViewModels;
 
 namespace WebAppStore.Repository
