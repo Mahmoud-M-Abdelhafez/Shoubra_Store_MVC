@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebAppStore.Models;
 
-namespace WebAppStore.Models
+namespace WebAppStore.Data
 {
     public class StoreContextDB : IdentityDbContext<AppUser>
     {
@@ -10,7 +11,7 @@ namespace WebAppStore.Models
         {
 
         }
-  
+
 
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
@@ -18,7 +19,7 @@ namespace WebAppStore.Models
         public virtual DbSet<Review> Reviews { get; set; }
 
         public virtual DbSet<Cart> Carts { get; set; }
-      
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -30,7 +31,7 @@ namespace WebAppStore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+
             base.OnModelCreating(modelBuilder);
         }
 

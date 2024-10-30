@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using WebAppStore.Repository;
 using WebAppStore.ViewModels;
+using WebAppStore.Interfaces;
 
 namespace WebAppStore.Controllers
 {

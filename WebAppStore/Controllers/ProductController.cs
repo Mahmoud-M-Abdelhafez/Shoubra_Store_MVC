@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebAppStore.Interfaces;
 using WebAppStore.Models;
-using WebAppStore.Repository;
 using WebAppStore.ViewModels;
 
 namespace WebAppStore.Controllers

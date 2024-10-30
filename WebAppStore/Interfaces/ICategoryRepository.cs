@@ -1,7 +1,7 @@
 ﻿using WebAppStore.Models;
 using WebAppStore.ViewModels;
 
-namespace WebAppStore.Repository
+namespace WebAppStore.Interfaces
 {
     public interface ICategoryRepository
     {
