@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppStore.Data;
 
-
 #nullable disable
 
 namespace WebAppStore.Migrations

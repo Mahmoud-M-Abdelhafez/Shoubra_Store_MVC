@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WebAppStore.Data;
+using WebAppStore.DataSeeder;
 using WebAppStore.Interfaces;
 using WebAppStore.Models;
 using WebAppStore.Repository;
@@ -22,7 +23,7 @@ namespace WebAppStore
                 (
                 options => options.UseSqlServer(connectionString)
                 );
-            builder.Services.AddIdentity<AppUser,IdentityRole>(
+            builder.Services.AddIdentity<AppUser, IdentityRole>(
                 options =>
                 {
                     options.Password.RequiredUniqueChars = 0;
@@ -55,41 +56,23 @@ namespace WebAppStore
                 name: "default",
                 pattern: "{controller=home}/{action=start}/{ id?}");
 
-            using(var scope = app.Services.CreateScope() )
-            {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                var roles = new[] {"Admin","User" };
-                foreach( var role in roles)
-                {
-                    if (!await roleManager.RoleExistsAsync(role))
-                        await roleManager.CreateAsync(new IdentityRole(role));
-                }
-            }
-
             using (var scope = app.Services.CreateScope())
             {
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-                string Name = "Admin";
-                string email = "Admin@gmail.com";
-                string Password = "12345678";
-                string Address = "Egypt";
-                if(await userManager.FindByEmailAsync(email)==null)
+                var services = scope.ServiceProvider;
+                try
                 {
-                    var user = new AppUser();
-                    user.Name = Name;
-                    user.Email = email;
-                    user.UserName = email;
-                    user.Address = Address;
-            
+                    var context = services.GetRequiredService<StoreContextDB>();
+                    context.Database.Migrate(); // This applies any pending migrations
 
-                    await userManager.CreateAsync(user, Password);
-
-                    await userManager.AddToRoleAsync(user, "Admin");
-
+                    // Call the Seeder
+                    await Seeder.SeedRolesAndUsers(services);
                 }
-
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error applying migrations: {ex.Message}");
+                }
+               
             }
-
             app.Run();
         }
     }
