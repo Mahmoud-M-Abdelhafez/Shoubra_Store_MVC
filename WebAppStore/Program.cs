@@ -35,6 +35,7 @@ namespace WebAppStore
                 .AddEntityFrameworkStores<StoreContextDB>().AddDefaultTokenProviders();
 
             //Custom Service --REgister
+            builder.Services.AddScoped<IAccountRepository, AccountRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();

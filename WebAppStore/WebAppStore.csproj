@@ -37,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Account\EditRole.cshtml" />
     <None Include="Views\Account\Role.cshtml" />
   </ItemGroup>
 
