@@ -22,7 +22,7 @@ namespace WebAppStore.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;  Database=Store_DB;  Trusted_Connection=True; Encrypt=False;");
+            optionsBuilder.UseSqlServer("Server=db16041.public.databaseasp.net; Database=db16041; User Id=db16041; Password=6As+%w7Pd5Z!; Encrypt=False; MultipleActiveResultSets=True;");
 
             base.OnConfiguring(optionsBuilder);
         }

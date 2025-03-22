@@ -14,7 +14,7 @@ namespace WebAppStore
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            //Server=(localdb)\\MSSQLLocalDB;  Database=Store_DB;  Trusted_Connection=True; Encrypt=False;
             var connectionString = builder.Configuration.GetConnectionString("default");
 
             // Add services to the container.

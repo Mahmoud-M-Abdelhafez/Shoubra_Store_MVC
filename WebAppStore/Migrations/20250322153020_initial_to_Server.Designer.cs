@@ -12,8 +12,8 @@ using WebAppStore.Data;
 namespace WebAppStore.Migrations
 {
     [DbContext(typeof(StoreContextDB))]
-    [Migration("20250315144501_initial")]
-    partial class initial
+    [Migration("20250322153020_initial_to_Server")]
+    partial class initial_to_Server
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -306,6 +306,7 @@ namespace WebAppStore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");

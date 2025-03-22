@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebAppStore.Models
 {
@@ -9,6 +10,7 @@ namespace WebAppStore.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        [Precision(18, 2)]
         public decimal Price { get; set; }
         [ForeignKey("catID")]
         public int CategoryId { get; set; }
